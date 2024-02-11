@@ -18,7 +18,7 @@ import (
 )
 
 var acceptableEventKinds = []int{0, 3}
-var keepAtMost = 10
+var keepAtMost = 15
 
 func main() {
 	var err error
@@ -84,7 +84,7 @@ func main() {
 				if err != nil {
 					return err
 				}
-				_, err = db.ExecContext(ctx, "DELETE FROM events WHERE id IN (SELECT id FROM events WHERE pubkey = ? AND kind = ? ORDER BY created_at DESC, id ASC LIMIT -1 OFFSET ?)", bPk, event.Kind, keepAtMost-1)
+				_, err = db.ExecContext(ctx, "DELETE FROM events WHERE id IN (SELECT id FROM events WHERE pubkey = ? AND kind = ? ORDER BY created_at DESC, id ASC LIMIT -1 OFFSET ?)", bPk, event.Kind, keepAtMost)
 				if err != nil {
 					return err
 				}
