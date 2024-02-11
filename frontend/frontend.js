@@ -26,7 +26,7 @@ signInButton.addEventListener("click", async () => {
 async function loggedIn(pk) {
     signInButton.disabled = true
     statusBox.innerText = "connecting to relay"
-    let relay = await NostrTools.Relay.connect("ws://localhost:4834")
+    let relay = await NostrTools.Relay.connect("wss://hist.nostr.land")
     statusBox.innerText = "getting events"
     let events = []
     const sub = relay.subscribe([
