@@ -45,7 +45,7 @@ func main() {
 	relay.Info.Description = "keeps history of your profile and contact list"
 	relay.StoreEvent = append(relay.StoreEvent,
 		func(ctx context.Context, event *nostr.Event) error {
-			bId, err := hex.DecodeString(event.PubKey)
+			bId, err := hex.DecodeString(event.ID)
 			if err != nil {
 				return err
 			}
@@ -186,7 +186,7 @@ func main() {
 			if !slices.Contains(acceptableEventKinds, event.Kind) {
 				return true, "blocked: this relay only accepts kind 0/3"
 			}
-			bId, err := hex.DecodeString(event.PubKey)
+			bId, err := hex.DecodeString(event.ID)
 			if err != nil {
 				return true, "error: " + err.Error()
 			}

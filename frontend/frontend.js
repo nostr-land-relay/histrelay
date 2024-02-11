@@ -166,7 +166,7 @@ async function restore(evt) {
             await relay.publish(signed)
             relayStatuses[el].innerText = "done"
         } catch(e) {
-            relayStatuses[el].innerText = "rejected: " + e
+            relayStatuses[el].innerText = e
         }
         clearInterval(interval)
     })
