@@ -64,7 +64,7 @@ function showList(list) {
             kindEvents = kindEvents.sort((a, b) => b.created_at - a.created_at)
             let table = document.createElement("table")
             let entries = [
-                {row: ["description", "date", "restore"], evt: null},
+                {row: ["date", "description", "restore"], evt: null},
                 ...kindEvents.map(el => {
                     let desc = "unknown"
                     if (el.kind === 0) {
@@ -83,7 +83,7 @@ function showList(list) {
                     }
                     let d = new Date(el.created_at * 1000)
                     return {
-                        row: [desc, d.toLocaleDateString() + " " + d.toLocaleTimeString(), Symbol.for("histrelay:restore")],
+                        row: [d.toLocaleDateString() + " " + d.toLocaleTimeString(), desc, Symbol.for("histrelay:restore")],
                         evt: el
                     }
                 })
@@ -102,7 +102,7 @@ function showList(list) {
                     } else {
                         td.innerText = el2
                     }
-                    if (j === 1) {
+                    if (j === 0) {
                         if (i !== 0) td.classList.add("mono")
                         td.classList.add("w-mc")
                     }
