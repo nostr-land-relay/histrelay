@@ -146,14 +146,17 @@ func main() {
 			}
 			go func() {
 				defer close(ch)
-				q := db.QueryRowContext(ctx, "SELECT event FROM events WHERE "+strings.Join(query, " AND "), queryParams...)
-				if q.Err() != nil {
-					fmt.Println(q.Err())
+				q, err := db.QueryContext(ctx, "SELECT event FROM events WHERE "+strings.Join(query, " AND "), queryParams...)
+				if err != nil {
+					fmt.Println(err)
 					return
 				}
 				var ctr = 0
 				var scanctr = 0
 				for {
+					if !q.Next() {
+						break
+					}
 					if scanctr >= 2000 {
 						break
 					}
@@ -162,9 +165,7 @@ func main() {
 					}
 					var evt string
 					err = q.Scan(&evt)
-					if sql.ErrNoRows == err {
-						break
-					} else if err != nil {
+					if err != nil {
 						fmt.Println(err)
 						break
 					}
@@ -174,6 +175,7 @@ func main() {
 					if !filter.Matches(&nevt) {
 						continue
 					}
+					ctr++
 					ch <- &nevt
 				}
 			}()
