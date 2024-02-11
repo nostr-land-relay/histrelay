@@ -77,6 +77,8 @@ function showList(list) {
                         if (data) {
                             desc = `name: ${data?.name || "none"}, nip05: ${data?.nip05 || "none"}`
                         }
+                    } else if (el.kind === 3) {
+                        desc = `following: ${el.tags.reduce((a, b) => a + Number(b?.[0] === "p"), 0)} people, ${el.tags.reduce((a, b) => a + Number(b?.[0] === "t"), 0)} hashtags`
                     }
                     let d = new Date(el.created_at * 1000)
                     return {
