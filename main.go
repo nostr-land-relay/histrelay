@@ -148,11 +148,13 @@ func main() {
 				defer close(ch)
 				q, err := db.QueryContext(ctx, "SELECT event FROM events WHERE "+strings.Join(query, " AND "), queryParams...)
 				if err != nil {
+					q.Close()
 					fmt.Println(err)
 					return
 				}
 				var ctr = 0
 				var scanctr = 0
+				defer q.Close()
 				for {
 					if !q.Next() {
 						break
