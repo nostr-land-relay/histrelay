@@ -117,7 +117,9 @@ func main() {
 					queryParams = append(queryParams, k)
 					ctr++
 				}
-				query = append(query, "kind IN ("+strings.Repeat("?,", ctr-1)+"?)")
+				if ctr != 0 {
+					query = append(query, "kind IN ("+strings.Repeat("?,", ctr-1)+"?)")
+				}
 			}
 			if len(filter.Authors) > 0 {
 				for _, a := range filter.Authors {
