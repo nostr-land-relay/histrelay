@@ -24,7 +24,8 @@ signInButton.addEventListener("click", async () => {
 })
 
 async function loggedIn(pk) {
-    signInButton.disabled = true
+    signInButton.style.display = "none"
+    statusBox.style.display = ""
     statusBox.innerText = "connecting to relay"
     let relay = await NostrTools.Relay.connect("wss://hist.nostr.land")
     statusBox.innerText = "getting events"
@@ -87,19 +88,23 @@ function showList(list) {
                     }
                 })
             ]
+            table.classList.add("fw")
             entries.forEach((el, i) => {
                 let tr = document.createElement("tr")
-                el.row.forEach(el2 => {
+                el.row.forEach((el2, j) => {
                     let td = document.createElement(i === 0 ? "th" : "td")
                     if (el2 === Symbol.for("histrelay:restore")) {
-                        let button = document.createElement("button")
-                        button.innerText = "restore"
-                        button.addEventListener("click", () => {
+                        td.addEventListener("click", () => {
                             restore(el.evt)
                         })
-                        td.appendChild(button)
+                        td.innerText = "restore"
+                        td.classList.add("restore")
                     } else {
                         td.innerText = el2
+                    }
+                    if (j === 0 || j === 2) {
+                        if (i !== 0) td.classList.add("mono")
+                        td.classList.add("w-mc")
                     }
                     tr.appendChild(td)
                 })
