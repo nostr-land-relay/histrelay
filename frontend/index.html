@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>history relay restore tool</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid;
+            padding: 1px 2px;
+        }
+
+        * {
+            font-family: monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>nostr follow list recovery tool</h2>
+    <p>add wss://hist.nostr.land to start backing up</p>
+    <button id="sign-in">sign in with extension</button><br><br>
+    <div id="statusbox">waiting for sign in</div><br>
+    powered by <a href="https://nostr.land">nostr.land</a> - a premium paid relay
+    <script src="nostr.bundle.js" defer></script>
+    <script src="frontend.js" defer></script>
+</body>
+
+</html>
