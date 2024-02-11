@@ -147,7 +147,7 @@ func main() {
 			}
 			go func() {
 				defer close(ch)
-				q, err := db.QueryContext(ctx, "SELECT event FROM events WHERE "+strings.Join(query, " AND "), queryParams...)
+				q, err := db.QueryContext(ctx, "SELECT event FROM events WHERE "+strings.Join(query, " AND ")+" ORDER BY created_at DESC, id ASC", queryParams...)
 				if err != nil {
 					fmt.Println(err)
 					return

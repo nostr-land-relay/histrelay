@@ -60,8 +60,8 @@ function showList(list) {
             p.innerText = "none found - add wss://hist.nostr.land"
             statusBox.appendChild(p)
         } else {
-            kindEvents = kindEvents.slice(0, 10)
             kindEvents = kindEvents.sort((a, b) => b.created_at - a.created_at)
+            kindEvents = kindEvents.slice(0, 15)
             let table = document.createElement("table")
             let entries = [
                 {row: ["date", "description", "restore"], evt: null},
