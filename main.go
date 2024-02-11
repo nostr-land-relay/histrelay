@@ -26,6 +26,7 @@ func main() {
 	db, err := sql.Open("sqlite3", "file:./data.db?_busy_timeout=5000&_mutex=full")
 	assert(err)
 	_, err = db.Exec(`
+	PRAGMA journal_mode = WAL;
 	CREATE TABLE IF NOT EXISTS events (
 		id BLOB NOT NULL PRIMARY KEY,
 		pubkey BLOB NOT NULL,
@@ -148,33 +149,28 @@ func main() {
 				defer close(ch)
 				q, err := db.QueryContext(ctx, "SELECT event FROM events WHERE "+strings.Join(query, " AND "), queryParams...)
 				if err != nil {
-					q.Close()
 					fmt.Println(err)
 					return
 				}
 				var ctr = 0
 				var scanctr = 0
-				defer q.Close()
 				for {
-					if !q.Next() {
-						break
-					}
-					if scanctr >= 2000 {
-						break
-					}
-					if (filter.Limit != 0 && ctr >= filter.Limit) || ctr >= 500 {
+					if !q.Next() || scanctr >= 2000 || (filter.Limit != 0 && ctr >= filter.Limit) || ctr >= 500 {
+						q.Close()
 						break
 					}
 					var evt string
 					err = q.Scan(&evt)
 					if err != nil {
 						fmt.Println(err)
+						q.Close()
 						break
 					}
 					scanctr++
 					nevt := nostr.Event{}
 					easyjson.Unmarshal([]byte(evt), &nevt)
 					if !filter.Matches(&nevt) {
+						q.Close()
 						continue
 					}
 					ctr++
