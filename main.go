@@ -203,6 +203,8 @@ func main() {
 		},
 	)
 
+	mux := relay.Router()
+	mux.Handle("/", http.FileServer(http.Dir(("./frontend/"))))
 	fmt.Println("running on :4834")
 	http.ListenAndServe(":4834", relay)
 }
